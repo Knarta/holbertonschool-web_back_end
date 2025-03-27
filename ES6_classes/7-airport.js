@@ -7,26 +7,26 @@ export default class Airport {
     }
 
     get name() {
-        return this._name;
+    return this._name;
     }
 
     get code() {
-        return this._code;
+    return this._code;
     }
 
     set name(name) {
-        this._name = name;
+    this._name = name;
     }
 
     set code(code) {
-        this._code = code;
+    this._code = code;
     }
 
     get [Symbol.toStringTag]() {
-        return 'Airport';
+    return 'Airport';
     }
 
     toString() {
-        return `[object ${this_code}]`;
+    return `[object ${this_code}]`;
     }
 }
