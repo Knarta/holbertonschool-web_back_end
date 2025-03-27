@@ -15,11 +15,11 @@ export default class Airport {
     }
 
     set name(name) {
-        return this._name = name;
+        this._name = name;
     }
 
     set code(code) {
-        return this._code = code;
+        this._code = code;
     }
 
     get [Symbol.toStringTag]() {
