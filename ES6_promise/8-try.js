@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default (numerator, denominator) => {
-  if (denominator === 0) {
-    throw new Error('cannot divide by 0');
-  }
-  return (denominator / numerator); 
-}
+    if (denominator === 0) {
+      throw new Error('cannot divide by 0');
+    }
+    return (numerator / denominator);
+  };
