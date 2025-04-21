@@ -2,6 +2,7 @@
 """
 Module 5-sum_list - Sum a list of floats
 """
+
 from typing import List
 
 
