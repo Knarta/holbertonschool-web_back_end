@@ -3,10 +3,10 @@
 This module contains a function that returns the length of a list.
 """
 
-from typing import List, Tuple, Any
+from typing import Iterable, List, Tuple, Sequence
 
 
-def element_length(lst: List[Any]) -> List[Tuple[Any, int]]:
+def element_length(lst: Iterable[Sequence]) -> List[Tuple[Sequence, int]]:
     """
     Args:
         lst: The list to process.
