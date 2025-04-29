@@ -5,6 +5,7 @@ Module 1-simple_pagination - Simple Pagination
 
 import csv
 from typing import List, Tuple
+import math
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
@@ -29,10 +30,10 @@ class Server:
 
     def dataset(self) -> List[List]:
         if self.__dataset is None:
-            with open(self.DATA_FILE) as f:
+            with open(self.DATA_FILE, 'r') as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
-                self.__dataset = dataset[1:]
+                self.__dataset = list(dataset)[1:]
 
         return self.__dataset
 
@@ -45,7 +46,7 @@ class Server:
         start, end = index_range(page, page_size)
         dataset = self.dataset()
 
-        if start >= len(dataset) or start < 0:
+        if start >= len(dataset):
             return []
 
-        return dataset[start:min(end, len(dataset))]
+        return dataset[start:end]
