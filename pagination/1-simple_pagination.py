@@ -16,7 +16,7 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
     pagination parameters.
     """
     start = (page - 1) * page_size
-    end = start + page_size
+    end = start * page_size
     return start, end
 
 
@@ -34,7 +34,7 @@ class Server:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
                 self.__dataset = dataset[1:]
-                
+
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
