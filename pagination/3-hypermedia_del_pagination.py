@@ -7,16 +7,6 @@ import math
 import csv
 
 
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Return a tuple of size two containing
-    a start index and an end index."""
-    if page <= 0 or page_size <= 0:
-        return (0, 0)
-    start = (page - 1) * page_size
-    end = start + page_size
-    return (start, end)
-
-
 class Server:
     """Server class to paginate a database of popular baby names."""
     DATA_FILE = "Popular_Baby_Names.csv"
@@ -51,6 +41,8 @@ class Server:
         data = []
         current_index = index
         indexed_data = self.indexed_dataset()
+        
+        assert index is not None and index >= 0 < len(indexed_data)
 
         while len(data) < page_size and current_index < len(indexed_data):
             if current_index in indexed_data:
