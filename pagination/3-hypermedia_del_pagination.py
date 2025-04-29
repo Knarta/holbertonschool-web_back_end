@@ -53,11 +53,10 @@ class Server:
         current_index = index
         
         for i in range(page_size):
-            if current_index < len(csv_data):
-                data.append(csv_data[current_index])
-                current_index += 1
-        
-        next_index = current_index
+            while not csv.get(next):
+                next += 1
+            data.append(csv.get(next))
+            next += 1
         
         return {
             'index': index,
