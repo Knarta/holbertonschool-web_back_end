@@ -29,22 +29,14 @@ class Server:
         self.__dataset = None
 
     def dataset(self) -> List[List]:
-        """Cached dataset
-        """
         if self.__dataset is None:
-            try:
-                with open(self.DATA_FILE) as f:
-                    reader = csv.reader(f)
-                    dataset = [row for row in reader]
-                    self.__dataset = dataset[1:]
-            except FileNotFoundError:
-                self.__dataset = []
-                print(f"Warning: {self.DATA_FILE} not found. Using empty dataset.")
+            with open(self.DATA_FILE) as f:
+                reader = csv.reader(f)
+                dataset = [row for row in reader]
+                self.__dataset = dataset[1:]
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Get a page of data
-        """
         assert isinstance(page, int) and isinstance(page_size, int)
         assert page > 0 and page_size > 0
         start, end = index_range(page, page_size)
