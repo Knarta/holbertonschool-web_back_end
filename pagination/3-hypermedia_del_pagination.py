@@ -55,8 +55,7 @@ class Server:
         while len(data) < page_size and current_index < len(indexed_data):
             if current_index in indexed_data:
                 data.append(indexed_data[current_index])
-                next_index += 1
-            current_index += 1
+                current_index += 1
 
         return {
             'index': index,
