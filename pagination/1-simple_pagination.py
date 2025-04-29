@@ -28,7 +28,6 @@ class Server:
     def __init__(self):
         self.__dataset = None
 
-
     def dataset(self) -> List[List]:
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
@@ -42,6 +41,7 @@ def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
     assert isinstance(page, int) and isinstance(page_size, int)
     assert page > 0 and page_size > 0
     start, end = index_range(page, page_size)
+    dataset = self.dataset()
 
     if start >= len(self.dataset()):
         return []
