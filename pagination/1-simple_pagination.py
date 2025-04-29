@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
-"""
-Module 1-simple_pagination - Simple Pagination
-"""
+""" A simple helper function for pagination. """
 
-import csv
-from typing import List, Tuple
+
+from typing import Tuple, List
 import math
+import csv
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """
-    Return a tuple of size two containing a start index and an end index
-    corresponding to the range of indexes
-    to return in a list for those particular
-    pagination parameters.
-    """
+    """Return a tuple of size two containing
+    a start index and an end index."""
     if page <= 0 or page_size <= 0:
         return (0, 0)
     start = (page - 1) * page_size
@@ -23,32 +18,27 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
 
 
 class Server:
-    """Server class to paginate a database of popular baby names.
-    """
+    """Server class to paginate a database of popular baby names."""
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
+        """Initialize the server with the database file."""
         self.__dataset = None
 
     def dataset(self) -> List[List]:
+        """Load the dataset if not already loaded."""
         if self.__dataset is None:
             with open(self.DATA_FILE, 'r') as f:
                 reader = csv.reader(f)
-                dataset = [row for row in reader]
-                self.__dataset = list(dataset)[1:]
-
+                self.__dataset = list(reader)[1:]
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Get a page of data
-        """
-        assert isinstance(page, int) and page > 0
-        assert isinstance(page_size, int) and page_size > 0
-
+        """Get a page of the dataset."""
+        assert isinstance(page, int) and isinstance(page_size, int)
+        assert page > 0 and page_size > 0
         start, end = index_range(page, page_size)
         dataset = self.dataset()
-
         if start >= len(dataset):
             return []
-
         return dataset[start:end]
