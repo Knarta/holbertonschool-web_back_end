@@ -4,7 +4,6 @@ Module 1-simple_pagination - Simple Pagination
 """
 
 import csv
-import math
 from typing import List, Tuple
 
 
@@ -16,7 +15,7 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
     pagination parameters.
     """
     start = (page - 1) * page_size
-    end = start * page_size
+    end = start + page_size
     return start, end
 
 
@@ -38,11 +37,15 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """Get a page of data
+        """
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
+        
         start, end = index_range(page, page_size)
         dataset = self.dataset()
-
-        if start >= len(dataset):
+        
+        if start >= len(dataset) or start < 0:
             return []
-        return dataset[start:end]
+            
+        return dataset[start:min(end, len(dataset))]
