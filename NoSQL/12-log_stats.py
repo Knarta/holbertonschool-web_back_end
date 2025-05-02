@@ -4,6 +4,7 @@
 """
 from pymongo import MongoClient
 
+
 def log_stats():
     """
         Log stats
@@ -11,18 +12,18 @@ def log_stats():
     client = MongoClient('mongodb://localhost:27017/')
     db = client.logs
     collection = db.nginx
-    
+
     logs_count = collection.count_documents({})
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    status_check = collection.count_documents({
+        "method": "GET", "path": "/status"})
     print(f"{logs_count} logs")
-
-    methods = collection.aggregate([
-        {"$group": {"_id": "$method", "count": {"$sum": 1}}}
-    ])
+    print("Methods:")
     for method in methods:
-        print(f"\tmethod {method['_id']}: {method['count']}")
-
-    status_check = collection.count_documents({"method": "GET", "path": "/status"})
+        count = collection.count_documents({"method": method})
+        print(f"\tmethod {method}: {count}")
     print(f"{status_check} status check")
+
 
 if __name__ == "__main__":
     log_stats()
