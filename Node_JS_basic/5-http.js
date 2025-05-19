@@ -9,31 +9,22 @@ const DATABASE = args[0];
 const hostname = '127.0.0.1';
 const port = 1245;
 
-const app = http.createServer((req, res) => {
+const app = http.createServer(sync (req, res) => {
+  res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
 
   const { url } = req;
 
   if (url === '/') {
-    res.statusCode = 200;
-    res.end('Hello Holberton School!');
+    res.write('Hello Holberton School!');
   } else if (url === '/students') {
     res.write('This is the list of our students\n');
-    
-    if (!DATABASE) {
-      res.statusCode = 500;
+    try {
+      const students = await countStudents(DATABASE);
+      res.end(`${students}`);
+    } catch (error) {
       res.end('Cannot load the database');
-      return;
     }
-
-    countStudents(DATABASE)
-      .then(() => {
-        res.end();
-      })
-      .catch((error) => {
-        res.statusCode = 500;
-        res.end(error.message);
-      });
   } else {
     res.statusCode = 404;
     res.end('Not Found');
@@ -42,4 +33,4 @@ const app = http.createServer((req, res) => {
 
 app.listen(port, hostname);
 
-module.exports = app; 
+module.exports = app;
