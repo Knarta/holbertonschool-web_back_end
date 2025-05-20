@@ -15,7 +15,6 @@ const app = http.createServer(async (req, res) => {
   const { url } = req;
 
   if (url === '/') {
-    res.statusCode = 200;
     res.end('Hello Holberton School!');
   } else if (url === '/students') {
     res.write('This is the list of our students\n');
