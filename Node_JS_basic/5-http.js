@@ -1,46 +1,57 @@
-/*eslint-disable*/
+/* eslint-disable */
 const http = require('http');
+const fs = require('fs');
 
-const args = process.argv.slice(2);
-const countStudents = require('./3-read_file_async');
+const app = http.createServer((req, res) => {
+    if (req.url === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end('Hello Holberton School!');
+    } else if (req.url === '/students') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
 
-const DATABASE = args[0];
+        const databaseFile = process.argv[2];
 
-const hostname = '127.0.0.1';
-const port = 1245;
+        if (!databaseFile) {
+            res.end('This is the list of our students\n');
+            return;
+        }
 
-const app = http.createServer(async (req, res) => {
-  res.setHeader('Content-Type', 'text/plain');
+        fs.readFile(databaseFile, 'utf8', (err, data) => {
+            if (err) {
+                res.end('Cannot load the database\n');
+                return;
+            }
 
-  const { url } = req;
+            const lines = data.split('\n').filter(line => line.trim() !== '');
+            const students = {};
+            let studentCount = 0;
 
-  if (url === '/') {
-    res.statusCode = 200;
-    res.end('Hello Holberton School!');
-  } else if (url === '/students') {
-    res.write('This is the list of our students\n');
-    
-    if (!DATABASE) {
-      res.statusCode = 500;
-      res.end('Cannot load the database');
-      return;
+            lines.forEach(line => {
+                const [name, field] = line.split(',');
+                if (name && field) {
+                    if (!students[field]) {
+                        students[field] = [];
+                    }
+                    students[field].push(name);
+                    studentCount++;
+                }
+            });
+
+            let responseText = 'This is the list of our students\n';
+            responseText += `Number of students: ${studentCount}\n`;
+
+            for (const field in students) {
+                responseText += `Number of students in ${field}: ${students[field].length}. List: ${students[field].join(', ')}\n`;
+            }
+
+            res.end(responseText);
+        });
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
     }
-
-    try {
-      await countStudents(DATABASE);
-      res.end();
-    } catch (error) {
-      res.statusCode = 500;
-      res.end(error.message);
-    }
-  } else {
-    res.statusCode = 404;
-    res.end('Not Found');
-  }
 });
 
-app.listen(port, hostname, () => {
-  //   console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.listen(1245);
 
 module.exports = app;
