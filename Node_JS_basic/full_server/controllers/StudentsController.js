@@ -15,10 +15,10 @@ export default class StudentsController {
             output += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}\n`;
           });
         
-        response.status(200).send(output.trim());
+        response.status(200).send(output);
       })
       .catch(() => {
-        response.status(500).send('Cannot load the database');
+        response.status(500).send('This is the list of our students\nCannot load the database');
       });
   }
 
