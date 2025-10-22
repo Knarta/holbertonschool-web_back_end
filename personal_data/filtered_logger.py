@@ -7,7 +7,6 @@ from typing import List
 import logging
 import os
 import mysql.connector
-from mysql.connector.connection import MySQLConnection
 
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -90,7 +89,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     host = os.getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     db_name = os.getenv('PERSONAL_DATA_DB_NAME')
 
-    return mysql.connector.connection.MySQLConnection(
+    return MySQLConnection(
         user=username,
         password=password,
         host=host,
@@ -106,13 +105,18 @@ def main():
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM users;")
+
+    header = []
+    for col in cursor.description:
+        header.append(col[0])
+
     logger = get_logger()
 
     for row in cursor:
-        message = "; ".join(
-            [f"{field}={value}" for field, value in zip(cursor.column_names, row)]
-        ) + ";"
-        logger.info(message)
+        info_message = ''
+        for i, col in enumerate(row):
+            info_message += f'{header[i]}={col};'
+        logger.info(info_message)
 
     cursor.close()
     db.close()
