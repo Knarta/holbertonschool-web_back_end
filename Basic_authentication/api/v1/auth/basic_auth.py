@@ -2,6 +2,7 @@
 """ Module of BasicAuth views
 """
 import base64
+from typing import Tuple
 from api.v1.auth.auth import Auth
 
 
@@ -54,4 +55,5 @@ class BasicAuth(Auth):
         if ":" not in decoded_base64_authorization_header:
             return None, None
 
-        return decoded_base64_authorization_header.split(":", 1)
+        email, password = decoded_base64_authorization_header.split(":", 1)
+        return (email, password)
