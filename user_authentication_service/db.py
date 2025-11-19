@@ -63,7 +63,6 @@ class DB:
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
 
-
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user in the database by user ID
 
@@ -72,7 +71,8 @@ class DB:
             **kwargs: Arbitrary keyword arguments to update
 
         Raises:
-            ValueError: If an argument that does not correspond to a user attribute is passed
+            ValueError: If an argument that
+            does not correspond to a user attribute is passed
         """
         user = self.find_user_by(id=user_id)
         valid_columns = User.__table__.columns.keys()
