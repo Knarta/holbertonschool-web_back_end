@@ -62,3 +62,16 @@ class DB:
         """
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
+
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """Update a user in the database by user ID
+
+        Args:
+            user_id: User ID
+            **kwargs: Arbitrary keyword arguments to update
+        """
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            setattr(user, key, value)
+        self._session.commit()
