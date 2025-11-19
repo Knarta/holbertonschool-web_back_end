@@ -70,8 +70,14 @@ class DB:
         Args:
             user_id: User ID
             **kwargs: Arbitrary keyword arguments to update
+
+        Raises:
+            ValueError: If an argument that does not correspond to a user attribute is passed
         """
         user = self.find_user_by(id=user_id)
+        valid_columns = User.__table__.columns.keys()
         for key, value in kwargs.items():
+            if key not in valid_columns:
+                raise ValueError
             setattr(user, key, value)
         self._session.commit()
