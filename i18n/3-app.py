@@ -2,7 +2,7 @@
 """Flask app demonstrating Babel translations with gettext."""
 
 from flask import Flask, render_template, request
-from flask_babel import Babel, gettext, get_locale as babel_get_locale
+from flask_babel import Babel, gettext as babel_gettext, get_locale as babel_get_locale
 
 
 class Config:
@@ -24,6 +24,11 @@ def get_locale():
 
 
 babel.init_app(app, locale_selector=get_locale)
+
+
+def gettext(message_id: str) -> str:
+    """Return the localized string for the given message identifier."""
+    return babel_gettext(message_id)
 
 
 @app.route("/", strict_slashes=False)
