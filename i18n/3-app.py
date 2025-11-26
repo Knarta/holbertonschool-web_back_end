@@ -2,7 +2,7 @@
 """Flask app demonstrating Babel translations with gettext."""
 
 from flask import Flask, render_template, request
-from flask_babel import Babel, gettext as babel_gettext, get_locale as babel_get_locale
+from flask_babel import Babel
 
 
 class Config:
