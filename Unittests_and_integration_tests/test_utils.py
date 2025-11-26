@@ -43,7 +43,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False}),
     ], doc_func=_doc_for_case)
     def test_get_json(self, test_url, test_payload):
-        """Verify get_json proxies requests.get and returns its JSON payload."""
+        """Verify get_json proxies requests.get & returns JSON payload."""
         with patch("utils.requests.get") as mock_get:
             mock_get.return_value.json.return_value = test_payload
             self.assertEqual(get_json(test_url), test_payload)
