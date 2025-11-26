@@ -28,7 +28,7 @@ babel.init_app(app, locale_selector=get_locale)
 
 def gettext(message_id: str) -> str:
     """Return the localized string for the given message identifier."""
-    return babel_gettext(message_id)
+    return babel.gettext(message_id)
 
 
 @app.route("/", strict_slashes=False)
@@ -36,7 +36,7 @@ def index():
     """Render localized landing page."""
     return render_template(
         "3-index.html",
-        locale=babel_get_locale(),
+        locale=get_locale(),
         gettext=gettext,
     )
 
