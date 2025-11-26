@@ -3,8 +3,8 @@
 """Unit tests for GithubOrgClient."""
 
 import unittest
-from unittest.mock import patch, PropertyMock
-from parameterized import parameterized
+from unittest.mock import patch, PropertyMock, Mock
+from parameterized import parameterized, parameterized_class
 from fixtures import TEST_PAYLOAD
 from client import GithubOrgClient
 
@@ -68,3 +68,45 @@ class TestGithubOrgClient(unittest.TestCase):
             GithubOrgClient.has_license(repo, license_key),
             expected,
         )
+
+
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_repos", "apache2_repos"),
+    TEST_PAYLOAD,
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration tests for GithubOrgClient."""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up patched requests.get for integration tests."""
+        cls.org_name = cls._extract_org_name(cls.org_payload)
+        cls.get_patcher = patch("requests.get")
+        cls.mock_get = cls.get_patcher.start()
+
+        def side_effect(url):
+            response = Mock()
+            if url == GithubOrgClient.ORG_URL.format(org=cls.org_name):
+                response.json.return_value = cls.org_payload
+            elif url == cls.org_payload.get("repos_url"):
+                response.json.return_value = cls.repos_payload
+            else:
+                response.json.return_value = {}
+            return response
+
+        cls.mock_get.side_effect = side_effect
+
+    @classmethod
+    def tearDownClass(cls):
+        """Stop patched requests.get."""
+        cls.get_patcher.stop()
+
+    @staticmethod
+    def _extract_org_name(org_payload):
+        """Extract org name from repos_url structure."""
+        if not org_payload:
+            return ""
+        if org_payload.get("login"):
+            return org_payload["login"]
+        repos_url = org_payload.get("repos_url", "")
+        return repos_url.rstrip("/").split("/")[-2] if repos_url else ""
