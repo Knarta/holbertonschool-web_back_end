@@ -5,7 +5,7 @@ Exposes a single '/' route rendering templates/3-index.html with Babel.
 """
 
 from flask import Flask, render_template, request
-from flask_babel import Babel
+from flask_babel import Babel, gettext as babel_gettext
 
 
 class Config:
@@ -18,7 +18,7 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
-babel = Babel(app)
+babel = Babel()
 
 
 def get_locale():
@@ -34,7 +34,7 @@ babel.init_app(app, locale_selector=get_locale)
 
 def gettext(message_id: str) -> str:
     """Return the localized string for the given message identifier."""
-    return babel.gettext(message_id)
+    return babel_gettext(message_id)
 
 
 @app.route("/", methods=["GET"])
