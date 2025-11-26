@@ -2,7 +2,7 @@
 """Flask app demonstrating Babel translations with gettext."""
 
 from flask import Flask, render_template, request
-from flask_babel import Babel, _
+from flask_babel import Babel, _, get_locale as babel_get_locale
 
 
 class Config:
@@ -29,9 +29,8 @@ babel.init_app(app, locale_selector=get_locale)
 @app.route("/", strict_slashes=False)
 def index():
     """Render localized landing page."""
-    return render_template("3-index.html")
+    return render_template("3-index.html", locale=babel_get_locale())
 
 
 if __name__ == "__main__":
     app.run()
-
