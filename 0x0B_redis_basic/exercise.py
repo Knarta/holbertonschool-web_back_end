@@ -68,7 +68,13 @@ def replay(method: Callable) -> None:
     # Get the instance and Redis client from the bound method
     instance = method.__self__
     redis_client = instance._redis
-    qualname = method.__qualname__
+    
+    # Get the original method if wrapped by decorators
+    original_method = method
+    while hasattr(original_method, '__wrapped__'):
+        original_method = original_method.__wrapped__
+    
+    qualname = original_method.__qualname__
     
     # Get input and output keys
     input_key = "{}:inputs".format(qualname)
