@@ -1,5 +1,7 @@
 node_modules
 *.json
+!package.json
+!**/package.json
 *.sh
 *-main*
 *pycache*
