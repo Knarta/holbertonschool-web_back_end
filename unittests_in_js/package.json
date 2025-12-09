@@ -1,12 +1,15 @@
 {
+    "name": "task_0",
+    "version": "1.0.0",
+    "description": "Unit tests with Mocha",
+    "main": "index.js",
     "scripts": {
-      "test": "mocha ./*.test.js"
+      "test": "./node_modules/mocha/bin/mocha"
     },
-    "dependencies": {
-      "mocha": "^11.7.5",
-      "sinon": "^21.0.0"
-    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
     "devDependencies": {
-      "chai": "^6.2.1"
+      "mocha": "^10.2.0"
     }
   }
