@@ -96,4 +96,11 @@ describe('Available payments', function() {
       done();
     });
   });
-});
+
+  it('should have credit_cards set to true', function(done) {
+    request.get(`${baseUrl}/available_payments`, (error, response, body) => {
+      const data = JSON.parse(body);
+      expect(data.payment_methods.credit_cards).to.be.true;
+      done();
+    });
+  });
