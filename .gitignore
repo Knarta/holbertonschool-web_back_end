@@ -7,3 +7,6 @@ node_modules
 *pycache*
 *-main.py
 venv/
+redis-6.0.10/
+.babelrc
+*.tar.gz
