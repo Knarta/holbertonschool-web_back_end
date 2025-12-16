@@ -1,29 +1,10 @@
-import { createClient } from 'redis';
+import { createClient, print } from 'redis';
 
 const client = createClient();
-
-client.on('error', (err) => {
-    console.log('Redis client not connected to the server:', err);
-});
-
-client.on('connect', () => {
-    console.log('Redis client connected to the server');
-});
 
 function setNewSchool(schoolName, value) {
     client.set(schoolName, value, print);
-
-    import { createClient, print } from 'redis';
-
-const client = createClient();
-
-client.on('connect', () => {
-  console.log('Redis client connected to the server');
-});
-
-client.on('error', (err) => {
-  console.log(`Redis client not connected to the server: ${err.message}`);
-});
+}
 
 /**
  * Set a new value in Redis for a given key
@@ -41,16 +22,18 @@ function setNewSchool(schoolName, value) {
 
 function displaySchoolValue(schoolName) {
   client.get(schoolName, (err, reply) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(reply);
-    }
+    console.log(reply);
   });
 }
 
-client.connect().then(() => {
-    displaySchoolValue('Holberton');
-    setNewSchool('HolbertonSanFrancisco', '100');
-    displaySchoolValue('HolbertonSanFrancisco');
+client.on('connect', () => {
+    console.log('Redis client connected to the server');
   });
+  
+  client.on('error', (err) => {
+    console.log(`Redis client not connected to the server: ${err.message}`);
+  });
+
+displaySchoolValue('Holberton');
+setNewSchool('HolbertonSanFrancisco', '100');
+displaySchoolValue('HolbertonSanFrancisco');
