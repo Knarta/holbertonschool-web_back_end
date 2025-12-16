@@ -2,10 +2,6 @@ import { createClient, print } from 'redis';
 
 const client = createClient();
 
-function setNewSchool(schoolName, value) {
-    client.set(schoolName, value, print);
-}
-
 /**
  * Set a new value in Redis for a given key
  * @param {string} schoolName - The key name
